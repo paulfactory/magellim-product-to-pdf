@@ -12,6 +12,7 @@ Thumbs.db
 # Fichiers temporaires
 *.tmp
 *.log
+npm-debug.log*
 
 # Fichiers de build
 dist/
@@ -20,3 +21,12 @@ build/
 # Environnement
 .env
 .env.local
+
+# PM2
+.pm2/
+pids/
+*.pid
+
+# IDE
+.vscode/
+.idea/
