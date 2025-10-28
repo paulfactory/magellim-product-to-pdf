@@ -1,13 +1,19 @@
-# Magellim PDF Generator API
+# Magellim Product to PDF
 
 API Node.js pour générer automatiquement des PDFs à partir des pages produits.
 
 ## Prérequis Serveur
 
 - **Node.js** version 18+
-- **npm**
 - Accès SSH
-- **Dépendances système pour Puppeteer**
+- Dépendances système pour Puppeteer
+
+## Installation
+
+- Cloner le projet
+- Installer les dépendances
+- Installer PM2 (gestionnaire de processus)
+- Démarrer l'API
 
 ## Mise à jour du projet
 
@@ -18,4 +24,3 @@ Ou manuellement :
 git pull origin main
 npm install
 pm2 restart magellim-pdf-api
-
