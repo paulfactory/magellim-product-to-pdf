@@ -1,0 +1,22 @@
+# Fichiers générés
+*.pdf
+data.json
+
+# Node modules
+node_modules/
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Fichiers temporaires
+*.tmp
+*.log
+
+# Fichiers de build
+dist/
+build/
+
+# Environnement
+.env
+.env.local

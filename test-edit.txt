@@ -1,0 +1,9 @@
+// Graphique 1 : Evolution de la performance
+const canvas1 = document.querySelector('#evolution-perf-chart');
+const h3_1 = document.querySelector('#performances .evolutions-performance h3');
+if (canvas1) {
+	graphs.evolutionPerf = {
+		image: canvas1.toDataURL('image/png'),
+		title: h3_1 ? h3_1.textContent.trim() : ''
+	};
+}
