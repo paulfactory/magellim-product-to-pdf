@@ -38,37 +38,34 @@ async function extractApicilData(debug = false) {
             poche_liquide: { pourcentage: null, nb_lignes: 0 }
         };
 
-        // Regex du script Python adaptées pour gérer les sauts de ligne
-        // \s+ permet d'accepter les espaces ET les sauts de ligne
+        // Les données sont sur des lignes séparées dans ce PDF
+        // On cherche les patterns directement : "XXX €" ou "XX,XX% (N lignes)"
 
-        // Actif net
-        const actifNetPattern = /Actif\s+net\s*:?\s*([\d\s,\.]+)\s*€?/i;
-        let match = fullText.match(actifNetPattern);
-        if (match) {
-            results.actif_net = match[1].trim().replace(/\s+/g, ' ');
+        // Cherche tous les patterns "nombre €"
+        const euroMatches = fullText.match(/[\d\s]+,\d+\s*€/g);
+        if (euroMatches && euroMatches.length >= 2) {
+            // Le premier gros nombre est l'actif net
+            results.actif_net = euroMatches[0].replace('€', '').trim().replace(/\s+/g, ' ');
+            // Le second petit nombre est la valeur liquidative
+            results.valeur_liquidative = euroMatches[1].replace('€', '').trim().replace(/\s+/g, ' ');
         }
 
-        // Valeur liquidative
-        const vlPattern = /Valeur\s+liquidative\s*:?\s*([\d\s,\.]+)\s*€?/i;
-        match = fullText.match(vlPattern);
-        if (match) {
-            results.valeur_liquidative = match[1].trim().replace(/\s+/g, ' ');
-        }
+        // Cherche tous les patterns "XX,XX% (N lignes)"
+        const pocheMatches = fullText.match(/([\d,]+)%\s*\((\d+)\s+lignes\)/g);
+        if (pocheMatches && pocheMatches.length >= 2) {
+            // Premier match = poche immobilière
+            const immoMatch = pocheMatches[0].match(/([\d,]+)%\s*\((\d+)\s+lignes\)/);
+            if (immoMatch) {
+                results.poche_immobiliere.pourcentage = immoMatch[1];
+                results.poche_immobiliere.nb_lignes = parseInt(immoMatch[2]);
+            }
 
-        // Poche immobilière (% + nb lignes)
-        const pocheImmoPattern = /[Pp]oche\s+immobili[èe]re\s*([\d,\.]+)%\s*\((\d+)\s+lignes\)/;
-        match = fullText.match(pocheImmoPattern);
-        if (match) {
-            results.poche_immobiliere.pourcentage = match[1];
-            results.poche_immobiliere.nb_lignes = parseInt(match[2]);
-        }
-
-        // Poche liquide (% + nb lignes)
-        const pocheLiquidePattern = /[Pp]oche\s+liquide\s*([\d,\.]+)%\s*\((\d+)\s+lignes\)/;
-        match = fullText.match(pocheLiquidePattern);
-        if (match) {
-            results.poche_liquide.pourcentage = match[1];
-            results.poche_liquide.nb_lignes = parseInt(match[2]);
+            // Deuxième match = poche liquide
+            const liquideMatch = pocheMatches[1].match(/([\d,]+)%\s*\((\d+)\s+lignes\)/);
+            if (liquideMatch) {
+                results.poche_liquide.pourcentage = liquideMatch[1];
+                results.poche_liquide.nb_lignes = parseInt(liquideMatch[2]);
+            }
         }
 
         console.log('✅ Données APICIL extraites:', results);
