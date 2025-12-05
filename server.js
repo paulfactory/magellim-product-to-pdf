@@ -7,7 +7,8 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-    exposedHeaders: ['Content-Disposition'] // Expose le header pour le navigateur
+    origin: 'https://www.groupemagellim.com',
+    exposedHeaders: ['Content-Disposition']
 }));
 app.use(express.json());
 
