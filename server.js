@@ -23,18 +23,18 @@ app.get('/', (req, res) => {
 // Route principale : génération du PDF
 app.post('/generate-pdf', async (req, res) => {
     try {
-        const { url } = req.body;
+        const { url, template, css } = req.body;
 
         if (!url) {
             return res.status(400).json({
-                error: 'URL manquante. Envoie { "url": "https://..." }'
+                error: 'URL manquante. Envoie { "url": "https://...", "template": "...", "css": "..." }'
             });
         }
 
         console.log(`📄 Génération du PDF pour : ${url}`);
 
-        // Génère le PDF
-        const { pdfBuffer, fileName } = await generatePDF(url);
+        // Génère le PDF avec template/CSS optionnels
+        const { pdfBuffer, fileName } = await generatePDF(url, template, css);
 
         // Envoie le PDF
         res.setHeader('Content-Type', 'application/pdf');

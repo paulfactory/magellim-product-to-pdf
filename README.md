@@ -1,26 +1,40 @@
-# Magellim Product to PDF
+# Magellim PDF Generator API
 
-API Node.js pour générer automatiquement des PDFs à partir des pages produits.
+API Node.js pour générer des PDFs à partir de pages WordPress.
 
-## Prérequis Serveur
+## Architecture
 
-- **Node.js** version 18+
-- Accès SSH
-- Dépendances système pour Puppeteer
+1. **Scraping** : L'API scrape la page WordPress et extrait les données
+2. **Template** : Utilise le template HTML fourni par WordPress (ou template local par défaut)
+3. **CSS** : Applique le CSS fourni par WordPress (ou CSS local par défaut)
+4. **PDF** : Génère le PDF avec Puppeteer
 
-## Installation
+## URL Production
 
-- Cloner le projet
-- Installer les dépendances
-- Installer PM2 (gestionnaire de processus)
-- Démarrer l'API
+`https://pdf-api.groupemagellim.com/`
 
-## Mise à jour du projet
+## Utilisation
 
-Quand je push des modifications, lancer sur le serveur :
+### Mode 1 : Template local (par défaut)
+```json
+{
+  "url": "https://www.groupemagellim.com/produit/"
+}
+```
+
+### Mode 2 : Template custom depuis WordPress
+```json
+{
+  "url": "https://www.groupemagellim.com/produit/",
+  "template": "<html>...</html>",
+  "css": "body { ... }"
+}
+```
+
+**Avantage** : Tu peux modifier le design du PDF directement dans WordPress sans redéployer l'API !
+
+## Mise à jour du serveur
+
 ```bash
+cd /var/www/groupemagellim-pdf/magellim-pdf-api
 ./update.sh
-Ou manuellement :
-git pull origin main
-npm install
-pm2 restart magellim-pdf-api

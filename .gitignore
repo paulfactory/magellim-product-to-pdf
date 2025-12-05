@@ -30,3 +30,6 @@ pids/
 # IDE
 .vscode/
 .idea/
+
+# Plugin WordPress (géré séparément)
+magellim-pdf-generator/

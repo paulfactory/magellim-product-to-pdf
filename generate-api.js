@@ -1,7 +1,7 @@
 const puppeteer = require("puppeteer");
 const path = require("path");
 
-async function generatePDF(urlToScrape) {
+async function generatePDF(urlToScrape, customTemplate = null, customCss = null) {
 	const browser = await puppeteer.launch({
 		headless: true, // Mode headless pour le serveur
 		args: ['--no-sandbox', '--disable-setuid-sandbox'] // Nécessaire sur certains serveurs
@@ -140,14 +140,32 @@ async function generatePDF(urlToScrape) {
 		data.graphiques = {};
 	}
 
-	// Va sur le template local
-	const templatePath = path.join(__dirname, 'template-magellim.html');
-	await page.goto("file://" + templatePath);
+	// Utilise le template custom si fourni, sinon le template local
+	if (customTemplate) {
+		console.log("📝 Utilisation du template custom depuis WordPress");
+		await page.setContent(customTemplate, { waitUntil: 'networkidle0' });
 
-	// Utilise la fonction globale du template pour injecter
-	await page.evaluate((injectedData) => {
-		window.injectData(injectedData);
-	}, data);
+		// Injecte le CSS custom si fourni
+		if (customCss) {
+			await page.addStyleTag({ content: customCss });
+		}
+
+		// Utilise la fonction globale du template pour injecter les données
+		await page.evaluate((injectedData) => {
+			if (typeof window.injectData === 'function') {
+				window.injectData(injectedData);
+			}
+		}, data);
+	} else {
+		console.log("📝 Utilisation du template local par défaut");
+		const templatePath = path.join(__dirname, 'template-magellim.html');
+		await page.goto("file://" + templatePath);
+
+		// Utilise la fonction globale du template pour injecter
+		await page.evaluate((injectedData) => {
+			window.injectData(injectedData);
+		}, data);
+	}
 
 	// Attend que toutes les images soient chargées
 	try {
