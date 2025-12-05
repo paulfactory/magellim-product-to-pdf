@@ -15,9 +15,33 @@ app.get('/', (req, res) => {
         status: 'ok',
         message: 'API Magellim PDF Generator',
         endpoints: {
-            generatePdf: 'POST /generate-pdf'
+            generatePdf: 'POST /generate-pdf',
+            testApicil: 'GET /test-apicil'
         }
     });
+});
+
+// Route de test APICIL
+app.get('/test-apicil', async (req, res) => {
+    try {
+        const { extractApicilData } = require('./extract-apicil');
+        console.log('🧪 Test extraction APICIL...');
+
+        const data = await extractApicilData();
+
+        console.log('✅ Données extraites:', data);
+
+        res.json({
+            success: true,
+            data: data
+        });
+    } catch (error) {
+        console.error('❌ Erreur:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
 });
 
 // Route principale : génération du PDF
