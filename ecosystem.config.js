@@ -1,4 +1,4 @@
-// Configuration PM2 pour le déploiement en production
+// Configuration PM2 pour le déploiement en production - Port 3000
 module.exports = {
   apps: [{
     name: 'magellim-pdf-api',
