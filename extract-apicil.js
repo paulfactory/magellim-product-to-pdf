@@ -38,31 +38,33 @@ async function extractApicilData(debug = false) {
             poche_liquide: { pourcentage: null, nb_lignes: 0 }
         };
 
-        // Actif net (peut être sur une autre ligne)
-        const actifNetPattern = /Actif\s+net[\s\S]*?([\d\s]+\d)\s*€/i;
+        // Actif net : cherche un grand nombre (avec espaces) suivi de €
+        const actifNetPattern = /Actif\s+net[\s\S]{0,100}?([\d\s]{5,}[\d,]+)\s*€/i;
         let match = fullText.match(actifNetPattern);
         if (match) {
             results.actif_net = match[1].trim().replace(/\s+/g, ' ');
         }
 
-        // Valeur liquidative (peut être sur une autre ligne)
-        const vlPattern = /Valeur\s+liquidative[\s\S]*?([\d\s,]+)\s*€/i;
+        // Valeur liquidative : cherche un petit nombre (< 1000) suivi de €
+        const vlPattern = /Valeur\s+liquidative[\s\S]{0,100}?(\d{1,3},\d{2})\s*€/i;
         match = fullText.match(vlPattern);
         if (match) {
-            results.valeur_liquidative = match[1].trim().replace(/\s+/g, '');
+            results.valeur_liquidative = match[1].trim();
         }
 
-        // Poche immobilière
-        const pocheImmoPattern = /Poche\s+immobili[èe]re[\s\S]*?([\d,]+)%\s*\((\d+)\s+lignes\)/i;
+        // Poche immobilière : proche de 98% avec 505 lignes
+        const pocheImmoPattern = /Poche\s+immobili[èe]re[\s\S]{0,50}?([\d,]+)%\s*\((\d+)\s+lignes\)/i;
         match = fullText.match(pocheImmoPattern);
         if (match) {
             results.poche_immobiliere.pourcentage = match[1];
             results.poche_immobiliere.nb_lignes = parseInt(match[2]);
         }
 
-        // Poche liquide
-        const pocheLiquidePattern = /Poche\s+liquide[\s\S]*?([\d,]+)%\s*\((\d+)\s+lignes\)/i;
-        match = fullText.match(pocheLiquidePattern);
+        // Poche liquide : cherche APRÈS poche immobilière
+        const pocheImmoIndex = fullText.toLowerCase().indexOf('poche immobilière');
+        const textAfterImmo = pocheImmoIndex >= 0 ? fullText.substring(pocheImmoIndex + 50) : fullText;
+        const pocheLiquidePattern = /Poche\s+liquide[\s\S]{0,50}?([\d,]+)%\s*\((\d+)\s+lignes\)/i;
+        match = textAfterImmo.match(pocheLiquidePattern);
         if (match) {
             results.poche_liquide.pourcentage = match[1];
             results.poche_liquide.nb_lignes = parseInt(match[2]);
