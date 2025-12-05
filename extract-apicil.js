@@ -38,22 +38,22 @@ async function extractApicilData(debug = false) {
             poche_liquide: { pourcentage: null, nb_lignes: 0 }
         };
 
-        // Actif net
-        const actifNetPattern = /Actif\s+net\s*:?\s*([\d\s,\.]+)\s*€?/i;
+        // Actif net (peut être sur une autre ligne)
+        const actifNetPattern = /Actif\s+net[\s\S]*?([\d\s]+\d)\s*€/i;
         let match = fullText.match(actifNetPattern);
         if (match) {
-            results.actif_net = match[1].trim();
+            results.actif_net = match[1].trim().replace(/\s+/g, ' ');
         }
 
-        // Valeur liquidative
-        const vlPattern = /Valeur\s+liquidative\s*:?\s*([\d\s,\.]+)\s*€?/i;
+        // Valeur liquidative (peut être sur une autre ligne)
+        const vlPattern = /Valeur\s+liquidative[\s\S]*?([\d\s,]+)\s*€/i;
         match = fullText.match(vlPattern);
         if (match) {
-            results.valeur_liquidative = match[1].trim();
+            results.valeur_liquidative = match[1].trim().replace(/\s+/g, '');
         }
 
         // Poche immobilière
-        const pocheImmoPattern = /[Pp]oche\s+immobili[èe]re\s*([\d,\.]+)%\s*\((\d+)\s+lignes\)/;
+        const pocheImmoPattern = /Poche\s+immobili[èe]re[\s\S]*?([\d,]+)%\s*\((\d+)\s+lignes\)/i;
         match = fullText.match(pocheImmoPattern);
         if (match) {
             results.poche_immobiliere.pourcentage = match[1];
@@ -61,7 +61,7 @@ async function extractApicilData(debug = false) {
         }
 
         // Poche liquide
-        const pocheLiquidePattern = /[Pp]oche\s+liquide\s*([\d,\.]+)%\s*\((\d+)\s+lignes\)/;
+        const pocheLiquidePattern = /Poche\s+liquide[\s\S]*?([\d,]+)%\s*\((\d+)\s+lignes\)/i;
         match = fullText.match(pocheLiquidePattern);
         if (match) {
             results.poche_liquide.pourcentage = match[1];
