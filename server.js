@@ -6,10 +6,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors({
-    origin: 'https://www.groupemagellim.com',
-    exposedHeaders: ['Content-Disposition']
-}));
+// CORS désactivé - géré par nginx
 app.use(express.json());
 
 // Route de test
