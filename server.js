@@ -27,7 +27,7 @@ app.get('/test-apicil', async (req, res) => {
         const { extractApicilData } = require('./extract-apicil');
         console.log('🧪 Test extraction APICIL...');
 
-        const data = await extractApicilData();
+        const data = await extractApicilData(req.query.debug === 'true');
 
         console.log('✅ Données extraites:', data);
 

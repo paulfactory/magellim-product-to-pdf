@@ -3,7 +3,7 @@ const pdfParse = require('pdf-parse');
 
 const APICIL_PDF_URL = 'https://www.viagenerations.fr/documents/2/Relevé%20de%20situation%20Groupe%20APICIL.pdf';
 
-async function extractApicilData() {
+async function extractApicilData(debug = false) {
     console.log('📥 Téléchargement du PDF APICIL...');
 
     try {
@@ -20,6 +20,15 @@ async function extractApicilData() {
         console.log('📄 Extraction du texte...');
         const data = await pdfParse(buffer);
         const fullText = data.text;
+
+        // Mode debug : affiche le texte complet
+        if (debug) {
+            console.log('='.repeat(80));
+            console.log('TEXTE COMPLET EXTRAIT :');
+            console.log('='.repeat(80));
+            console.log(fullText);
+            console.log('='.repeat(80));
+        }
 
         // Extrait les données avec les regex du script Python
         const results = {
