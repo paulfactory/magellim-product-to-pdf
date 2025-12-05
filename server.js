@@ -54,6 +54,13 @@ app.post('/generate-pdf', async (req, res) => {
     }
 });
 
-app.listen(PORT, '127.0.0.1', () => {
-    console.log(`🚀 Serveur démarré sur http://127.0.0.1:${PORT}`);
+// Écoute sur toutes les interfaces (IPv4 + IPv6)
+const server = app.listen(PORT, () => {
+    console.log(`🚀 Serveur démarré sur le port ${PORT}`);
+});
+
+// Force l'écoute en dual-stack
+server.on('listening', () => {
+    const address = server.address();
+    console.log(`📡 Écoute sur ${address.address}:${address.port}`);
 });
