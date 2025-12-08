@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<link href="styles.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<div class="page first page-break">
+			<section class="top-section">
+				<div class="intro">
+					<h1 id="title"></h1>
+					<h2 id="subtitle"></h2>
+					<p id="description"></p>
+				</div>
+				<div class="top-section-image">
+					<img class="mask" src="https://www.groupemagellim.com/wp-content/uploads/mask-pdf.svg" alt="" />
+					<img id="top-section-img" src="" alt="" />
+				</div>
+			</section>
+			<section id="presentation">
+				<!-- Les iconbox sont injectées ici -->
+			</section>
+			<section id="patrimoine">
+				<div class="left-column">
+					<div class="intro" style="padding-bottom: 0.5rem;"></div>
+					<div class="title-column"></div>
+					<div class="item-list"></div>
+				</div>
+
+				<div class="right-column">
+					<div class="title-column"></div>
+					<div class="map">
+						<img src="" alt="" />
+					</div>
+				</div>
+			</section>
+			<section id="performances">
+				<h2 id="graphiques-main-title"></h2>
+
+				<!-- Données APICIL -->
+				<div class="apicil-data">
+					<div class="apicil-row">
+						<div class="apicil-item">
+							<span class="apicil-label">Actif net :</span>
+							<span class="apicil-value" id="actif-net"></span> €
+						</div>
+						<div class="apicil-item">
+							<span class="apicil-label">Valeur liquidative :</span>
+							<span class="apicil-value" id="valeur-liquidative"></span> €
+						</div>
+					</div>
+					<div class="apicil-row">
+						<div class="apicil-item">
+							<span class="apicil-label">Poche immobilière :</span>
+							<span class="apicil-value" id="poche-immo"></span>% (<span id="poche-immo-lignes"></span> lignes)
+						</div>
+						<div class="apicil-item">
+							<span class="apicil-label">Poche liquide :</span>
+							<span class="apicil-value" id="poche-liquide"></span>% (<span id="poche-liquide-lignes"></span> lignes)
+						</div>
+					</div>
+				</div>
+
+				<div class="graphiques">
+					<div class="graph-item">
+						<h4 id="graph-evolution-perf-title"></h4>
+						<div class="graph">
+						<img id="graph-evolution-perf-img" src="" alt="" />
+						</div>
+					</div>
+					<div class="graph-item">
+						<h4 id="graph-perf-calendaires-title"></h4>
+						<div class="graph">
+						<img id="graph-perf-calendaires-img" src="" alt="" />
+						</div>
+					</div>
+				</div>
+				<div id="tableau-performances"></div>
+			</section>
+		</div>
+		<div class="page second">
+			<section id="caracteristiques">
+				<!-- Les caractéristiques seront injectées ici -->
+			</section>
+			<section id="frais">
+				<!-- Les frais sont injectés ici -->
+			</section>
+			<section id="disponibilite">
+				<!-- La disponibilité sera injectée ici -->
+			</section>
+			<section id="risques">
+			<div class="intro"></div>
+			<div class="pastille"></div>
+		</section>
+			<section id="footer">
+				<div class="top-footer">
+					<div class="infos">
+						<img class="reim-logo" src="https://www.groupemagellim.com/wp-content/uploads/logo-magellim-reim-white.svg" />
+						<a class="link-button" href="https://www.magellim-reim.com/">www.magellim-reim.com</a>
+					</div>
+					<div class="icons-container">
+						<div class="icons-title"></div>
+						<div class="icon-box-footer"></div>
+					</div>
+				</div>
+				<div class="bottom-footer">
+					<p></p>
+					<img class="group-logo" src="https://www.groupemagellim.com/wp-content/uploads/logo-groupe-magellim-white.svg" />
+					
+				</div>
+			</section>
+		</div>
+		<script>
+			// Fonction globale pour injecter les données
+			window.injectData = function (data) {
+				// Top section
+				if (data.topSection) {
+					document.querySelector("#title").textContent = data.topSection.titre || "";
+					document.querySelector("#subtitle").textContent = data.topSection.sousTitre || "";
+					document.querySelector("#description").textContent = data.topSection.description || "";
+					if (data.topSection.imageUrl) {
+						document.querySelector("#top-section-img").src = data.topSection.imageUrl;
+					}
+				}
+
+				// Chiffres clés
+				if (data.chiffresCles && data.chiffresCles.length > 0) {
+					const container = document.querySelector("#presentation");
+					container.innerHTML = "";
+					data.chiffresCles.forEach((box) => {
+						const div = document.createElement("div");
+						div.className = "iconbox";
+						div.innerHTML = `
+<img src="${box.icon}" alt="" />
+<p>${box.titre}</p>
+`;
+						container.appendChild(div);
+					});
+				}
+
+				// Patrimoine
+				if (data.patrimoine) {
+					if (data.patrimoine.intro) {
+						document.querySelector("#patrimoine .intro").innerHTML = data.patrimoine.intro;
+					}
+					if (data.patrimoine.titleLeft) {
+						document.querySelector("#patrimoine .left-column .title-column").innerHTML = data.patrimoine.titleLeft;
+					}
+					if (data.patrimoine.titleRight) {
+						document.querySelector("#patrimoine .right-column .title-column").innerHTML = data.patrimoine.titleRight;
+					}
+					if (data.patrimoine.mapImage) {
+						document.querySelector("#patrimoine .map img").src = data.patrimoine.mapImage;
+					}
+					if (data.patrimoine.items && data.patrimoine.items.length > 0) {
+						const itemList = document.querySelector("#patrimoine .item-list");
+						itemList.innerHTML = "";
+						data.patrimoine.items.forEach((itemHtml) => {
+							const itemDiv = document.createElement("div");
+							itemDiv.className = "item";
+							itemDiv.innerHTML = itemHtml;
+							itemList.appendChild(itemDiv);
+						});
+					}
+				}
+
+				// Frais - calcul du nombre de colonnes
+				if (data.frais && data.frais.items && data.frais.items.length > 0) {
+					const section = document.querySelector("#frais");
+					section.innerHTML = "";
+
+					const title = document.createElement("h2");
+					title.textContent = data.frais.title;
+					section.appendChild(title);
+
+					const container = document.createElement("div");
+					container.className = "frais-list-items";
+
+					let columns = 1;
+					const count = data.frais.items.length;
+					if (count >= 5) columns = 3;
+					else if (count === 4) columns = 4;
+					else if (count === 3) columns = 3;
+					else if (count === 2) columns = 2;
+
+					container.style.setProperty("--columns", columns);
+
+					data.frais.items.forEach((frais) => {
+						const div = document.createElement("div");
+						div.className = "frais-item";
+						div.innerHTML = `
+<div class="number">${frais.number}</div>
+<div class="text">${frais.text}</div>
+`;
+						container.appendChild(div);
+					});
+
+					section.appendChild(container);
+				}
+
+				// Caractéristiques
+				if (data.caracteristiques) {
+					const section = document.querySelector("#caracteristiques");
+					if (data.caracteristiques.title) {
+						const title = document.createElement("h2");
+						title.textContent = data.caracteristiques.title;
+						section.appendChild(title);
+					}
+					if (data.caracteristiques.table) {
+						section.insertAdjacentHTML("beforeend", data.caracteristiques.table);
+					}
+				}
+
+				// Disponibilité
+				if (data.disponibilite) {
+					const section = document.querySelector("#disponibilite");
+					if (section) {
+						if (data.disponibilite.title) {
+							const title = document.createElement("h2");
+							title.textContent = data.disponibilite.title;
+							section.appendChild(title);
+						}
+						if (data.disponibilite.logos && data.disponibilite.logos.length > 0) {
+							const logoList = document.createElement("div");
+							logoList.className = "logo-list";
+
+							// Définir le nombre de colonnes en fonction du nombre de logos
+							const logoCount = data.disponibilite.logos.length;
+							logoList.style.setProperty("--columns", logoCount);
+
+							data.disponibilite.logos.forEach((logo) => {
+								const img = document.createElement("img");
+								img.src = logo.src;
+								img.alt = logo.alt;
+								logoList.appendChild(img);
+							});
+							section.appendChild(logoList);
+						}
+					}
+				}
+
+				// Tableau de performances
+				if (data.tableauPerformances) {
+					document.querySelector("#tableau-performances").innerHTML = data.tableauPerformances;
+				}
+
+				// Données APICIL
+				if (data.apicil) {
+					document.querySelector("#actif-net").textContent = data.apicil.actif_net || 'N/A';
+					document.querySelector("#valeur-liquidative").textContent = data.apicil.valeur_liquidative || 'N/A';
+					document.querySelector("#poche-immo").textContent = data.apicil.poche_immobiliere.pourcentage || 'N/A';
+					document.querySelector("#poche-immo-lignes").textContent = data.apicil.poche_immobiliere.nb_lignes || '0';
+					document.querySelector("#poche-liquide").textContent = data.apicil.poche_liquide.pourcentage || 'N/A';
+					document.querySelector("#poche-liquide-lignes").textContent = data.apicil.poche_liquide.nb_lignes || '0';
+				}
+
+				// Graphiques (images base64)
+				if (data.graphiques) {
+					if (data.graphiques.mainTitle) {
+						document.querySelector("#graphiques-main-title").textContent = data.graphiques.mainTitle;
+					}
+					if (data.graphiques.evolutionPerf) {
+						document.querySelector("#graph-evolution-perf-title").textContent = data.graphiques.evolutionPerf.title;
+						document.querySelector("#graph-evolution-perf-img").src = data.graphiques.evolutionPerf.image;
+					}
+					if (data.graphiques.perfCalendaires) {
+						document.querySelector("#graph-perf-calendaires-title").textContent = data.graphiques.perfCalendaires.title;
+						document.querySelector("#graph-perf-calendaires-img").src = data.graphiques.perfCalendaires.image;
+					}
+				}
+
+				// Risques
+				if (data.risques) {
+					if (data.risques.intro) {
+						document.querySelector("#risques .intro").innerHTML = data.risques.intro;
+					}
+					if (data.risques.pastilles && data.risques.pastilles.length > 0) {
+						document.querySelector("#risques .pastille").innerHTML = data.risques.pastilles[0];
+					}
+				}
+
+				// Footer
+				if (data.footer) {
+					if (data.footer.iconsTitle) {
+						document.querySelector("#footer .icons-title").innerHTML = data.footer.iconsTitle;
+					}
+					if (data.footer.icons && data.footer.icons.length > 0) {
+						const iconContainer = document.querySelector("#footer .icon-box-footer");
+						if (iconContainer) {
+							iconContainer.innerHTML = "";
+							data.footer.icons.forEach((iconHtml) => {
+								const div = document.createElement("div");
+								div.innerHTML = iconHtml;
+								iconContainer.appendChild(div);
+							});
+						}
+					}
+					if (data.footer.legals) {
+						const bottomFooter = document.querySelector("#footer .bottom-footer p");
+						if (bottomFooter) {
+							bottomFooter.innerHTML = data.footer.legals;
+						}
+					}
+				}
+			};
+
+			// Charge les données depuis data.json (pour Live Server)
+			fetch("data.json")
+				.then((res) => res.json())
+				.then((data) => {
+					console.log("Données chargées:", data);
+					window.injectData(data);
+					console.log("✅ Données injectées");
+				})
+				.catch((err) => console.error("Erreur chargement data.json:", err));
+		</script>
+	</body>
+</html>
