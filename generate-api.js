@@ -151,7 +151,10 @@ async function generatePDF(urlToScrape, customTemplate = null, customCss = null)
 	// Utilise le template custom si fourni, sinon le template local
 	if (customTemplate) {
 		console.log("📝 Utilisation du template custom depuis WordPress");
-		await page.setContent(customTemplate, { waitUntil: 'networkidle0' });
+		await page.setContent(customTemplate, {
+			waitUntil: 'domcontentloaded',
+			timeout: 60000
+		});
 
 		// Injecte le CSS custom si fourni
 		if (customCss) {
