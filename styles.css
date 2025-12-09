@@ -134,14 +134,21 @@ section.top-section .top-section-image #top-section-img {
   align-items: center;
   gap: 1rem;
 }
-#presentation .iconbox img {
-  width: 2.5rem;
-  height: 2.5rem;
-  padding: 0.6rem;
+#presentation .iconbox div {
+  width: 3.5rem;
+  height: 3.5rem;
   background-color: rgb(229, 180, 57);
   border-radius: 100px;
   border: 4px solid #37AC68;
   box-shadow: 0 0 0 1px rgb(229, 180, 57);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+#presentation .iconbox div img {
+  width: 2rem;
+  height: 2rem;
 }
 #presentation .iconbox p {
   margin: 0;
@@ -166,6 +173,11 @@ section.top-section .top-section-image #top-section-img {
   display: flex;
   flex-direction: column;
 }
+#patrimoine .left-column p {
+  font-size: 0.72rem;
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+}
 #patrimoine .right-column {
   flex-grow: 1;
 }
@@ -181,18 +193,16 @@ section.top-section .top-section-image #top-section-img {
   flex-direction: column;
   gap: 0rem;
 }
-#patrimoine .item-list .item {
+#patrimoine .item-list .item p {
+  margin-bottom: 0;
   font-size: 0.9rem;
   margin-top: 0;
   line-height: 1.5;
   margin-bottom: 0.25rem;
 }
-#patrimoine .item-list .item p {
-  margin-bottom: 0;
-}
 #patrimoine .item-list .item .color-reim {
   color: #37AC68;
-  font-size: 150%;
+  font-size: 120%;
 }
 
 #performances {
@@ -231,6 +241,22 @@ section.top-section .top-section-image #top-section-img {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+}
+#performances .apicil-data {
+  display: flex;
+  margin-bottom: 1rem;
+  gap: 0.25rem 1.25rem;
+}
+#performances .apicil-data .apicil-item {
+  font-weight: 600;
+  display: flex;
+  flex-shrink: 0;
+  font-size: 0.62rem;
+  line-height: 1.4;
+  gap: 0.25rem;
+}
+#performances .apicil-data .apicil-item .apicil-label {
+  font-weight: 400;
 }
 #performances #tableau-performances h3 {
   font-size: 1rem;

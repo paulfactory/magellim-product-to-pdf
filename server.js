@@ -63,7 +63,7 @@ app.post('/generate-pdf', async (req, res) => {
         // Envoie le PDF
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
-        res.send(pdfBuffer);
+        res.end(pdfBuffer, 'binary'); // Utilise res.end() au lieu de res.send() pour les buffers
 
         console.log(`✅ PDF envoyé : ${fileName}`);
 

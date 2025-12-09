@@ -5,6 +5,7 @@ const { extractApicilData } = require("./extract-apicil");
 async function generatePDF(urlToScrape, customTemplate = null, customCss = null) {
 	// Extrait les données APICIL en parallèle du scraping
 	const apicilDataPromise = extractApicilData();
+	console.log("🌐 Lancement de Puppeteer...");
 	const browser = await puppeteer.launch({
 		headless: true, // Mode headless pour le serveur
 		args: ['--no-sandbox', '--disable-setuid-sandbox'] // Nécessaire sur certains serveurs
@@ -18,9 +19,12 @@ async function generatePDF(urlToScrape, customTemplate = null, customCss = null)
 		deviceScaleFactor: 2.5
 	});
 
+	console.log(`🔗 Navigation vers ${urlToScrape}...`);
+	const startTime = Date.now();
 	await page.goto(urlToScrape, {
 		waitUntil: "networkidle0",
 	});
+	console.log(`✅ Page chargée en ${Date.now() - startTime}ms`);
 
 	const data = await page.evaluate(() => {
 		const getText = (selector) => document.querySelector(selector)?.textContent?.trim() || "";
@@ -44,7 +48,7 @@ async function generatePDF(urlToScrape, customTemplate = null, customCss = null)
 			},
 			chiffresCles: Array.from(document.querySelectorAll(".chiffres-cles .w-iconbox")).map((box) => ({
 				icon: box.querySelector("#presentation .w-iconbox-icon img")?.src || "",
-				titre: box.querySelector("#presentation .w-iconbox-meta .w-iconbox-text")?.textContent?.trim() || "",
+				titre: box.querySelector("#presentation .w-iconbox-meta .w-iconbox-title")?.textContent?.trim() || "",
 			})),
 			patrimoine: {
 				intro: document.querySelector("#patrimoine .wpb_text_column.intro > .wpb_wrapper")?.innerHTML?.trim() || "",
@@ -118,7 +122,7 @@ async function generatePDF(urlToScrape, customTemplate = null, customCss = null)
 			const h3_1 = document.querySelector("#performances .evolutions-performance h3");
 			if (canvas1) {
 				graphs.evolutionPerf = {
-					image: canvas1.toDataURL("image/png"),
+					image: canvas1.toDataURL("image/png"), // PNG pour la transparence
 					title: h3_1 ? h3_1.textContent.trim() : "",
 				};
 			}
@@ -128,7 +132,7 @@ async function generatePDF(urlToScrape, customTemplate = null, customCss = null)
 			const h3_2 = document.querySelector("#performances .performances-calendaires h3");
 			if (canvas2) {
 				graphs.perfCalendaires = {
-					image: canvas2.toDataURL("image/png"),
+					image: canvas2.toDataURL("image/png"), // PNG pour la transparence
 					title: h3_2 ? h3_2.textContent.trim() : "",
 				};
 			}
@@ -136,7 +140,7 @@ async function generatePDF(urlToScrape, customTemplate = null, customCss = null)
 			return graphs;
 		});
 
-		console.log("✅ Graphiques convertis en images");
+		console.log("✅ Graphiques convertis en images (JPEG optimisé)");
 		data.graphiques = graphImages;
 	} catch (error) {
 		console.log("⚠️  Pas de graphiques trouvés ou timeout");

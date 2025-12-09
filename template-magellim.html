@@ -22,7 +22,7 @@
 			</section>
 			<section id="patrimoine">
 				<div class="left-column">
-					<div class="intro" style="padding-bottom: 0.5rem;"></div>
+					<div class="intro" style="padding-bottom: 0.5rem"></div>
 					<div class="title-column"></div>
 					<div class="item-list"></div>
 				</div>
@@ -39,25 +39,21 @@
 
 				<!-- Données APICIL -->
 				<div class="apicil-data">
-					<div class="apicil-row">
-						<div class="apicil-item">
-							<span class="apicil-label">Actif net :</span>
-							<span class="apicil-value" id="actif-net"></span> €
-						</div>
-						<div class="apicil-item">
-							<span class="apicil-label">Valeur liquidative :</span>
-							<span class="apicil-value" id="valeur-liquidative"></span> €
-						</div>
+					<div class="apicil-item">
+						<span class="apicil-label">Actif net :</span>
+						<span class="apicil-value" id="actif-net"></span> €
 					</div>
-					<div class="apicil-row">
-						<div class="apicil-item">
-							<span class="apicil-label">Poche immobilière :</span>
-							<span class="apicil-value" id="poche-immo"></span>% (<span id="poche-immo-lignes"></span> lignes)
-						</div>
-						<div class="apicil-item">
-							<span class="apicil-label">Poche liquide :</span>
-							<span class="apicil-value" id="poche-liquide"></span>% (<span id="poche-liquide-lignes"></span> lignes)
-						</div>
+					<div class="apicil-item">
+						<span class="apicil-label">Valeur liquidative :</span>
+						<span class="apicil-value" id="valeur-liquidative"></span> €
+					</div>
+					<div class="apicil-item">
+						<span class="apicil-label">Poche immobilière :</span>
+						<span class="apicil-value" id="poche-immo"></span>% (<span id="poche-immo-lignes"></span> lignes)
+					</div>
+					<div class="apicil-item">
+						<span class="apicil-label">Poche liquide :</span>
+						<span class="apicil-value" id="poche-liquide"></span>% (<span id="poche-liquide-lignes"></span> lignes)
 					</div>
 				</div>
 
@@ -65,13 +61,13 @@
 					<div class="graph-item">
 						<h4 id="graph-evolution-perf-title"></h4>
 						<div class="graph">
-						<img id="graph-evolution-perf-img" src="" alt="" />
+							<img id="graph-evolution-perf-img" src="" alt="" />
 						</div>
 					</div>
 					<div class="graph-item">
 						<h4 id="graph-perf-calendaires-title"></h4>
 						<div class="graph">
-						<img id="graph-perf-calendaires-img" src="" alt="" />
+							<img id="graph-perf-calendaires-img" src="" alt="" />
 						</div>
 					</div>
 				</div>
@@ -89,9 +85,9 @@
 				<!-- La disponibilité sera injectée ici -->
 			</section>
 			<section id="risques">
-			<div class="intro"></div>
-			<div class="pastille"></div>
-		</section>
+				<div class="intro"></div>
+				<div class="pastille"></div>
+			</section>
 			<section id="footer">
 				<div class="top-footer">
 					<div class="infos">
@@ -106,7 +102,6 @@
 				<div class="bottom-footer">
 					<p></p>
 					<img class="group-logo" src="https://www.groupemagellim.com/wp-content/uploads/logo-groupe-magellim-white.svg" />
-					
 				</div>
 			</section>
 		</div>
@@ -131,7 +126,7 @@
 						const div = document.createElement("div");
 						div.className = "iconbox";
 						div.innerHTML = `
-<img src="${box.icon}" alt="" />
+<div class="icon"><img src="${box.icon}" alt="" /></div>
 <p>${box.titre}</p>
 `;
 						container.appendChild(div);
@@ -246,12 +241,12 @@
 
 				// Données APICIL
 				if (data.apicil) {
-					document.querySelector("#actif-net").textContent = data.apicil.actif_net || 'N/A';
-					document.querySelector("#valeur-liquidative").textContent = data.apicil.valeur_liquidative || 'N/A';
-					document.querySelector("#poche-immo").textContent = data.apicil.poche_immobiliere.pourcentage || 'N/A';
-					document.querySelector("#poche-immo-lignes").textContent = data.apicil.poche_immobiliere.nb_lignes || '0';
-					document.querySelector("#poche-liquide").textContent = data.apicil.poche_liquide.pourcentage || 'N/A';
-					document.querySelector("#poche-liquide-lignes").textContent = data.apicil.poche_liquide.nb_lignes || '0';
+					document.querySelector("#actif-net").textContent = data.apicil.actif_net || "N/A";
+					document.querySelector("#valeur-liquidative").textContent = data.apicil.valeur_liquidative || "N/A";
+					document.querySelector("#poche-immo").textContent = data.apicil.poche_immobiliere.pourcentage || "N/A";
+					document.querySelector("#poche-immo-lignes").textContent = data.apicil.poche_immobiliere.nb_lignes || "0";
+					document.querySelector("#poche-liquide").textContent = data.apicil.poche_liquide.pourcentage || "N/A";
+					document.querySelector("#poche-liquide-lignes").textContent = data.apicil.poche_liquide.nb_lignes || "0";
 				}
 
 				// Graphiques (images base64)

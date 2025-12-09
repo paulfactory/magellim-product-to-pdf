@@ -1,0 +1,579 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
+@import "/Users/pauldemellier/Library/CloudStorage/Dropbox/3 - GRAPHISME/CLIENTS/GROUPE MAGELLIM/wordpress-groupe-magellim/wp-content/themes/Impreza-child/Sass-magellim/base/_variables";
+
+$primary-500: #004e83;
+$outer-padding: 1.5rem;
+$link-color: rgb(229, 180, 57);
+$grey: rgb(245, 245, 245);
+
+@page {
+	size: A4;
+	margin: 0;
+}
+@mixin h1 {
+	font-size: 1.75rem;
+	text-transform: uppercase;
+	margin-top: 0;
+	line-height: 1.5;
+	margin-bottom: 0.25rem;
+}
+@mixin h2 {
+	font-size: 1.3rem;
+	margin-top: 0;
+	line-height: 1.4;
+	margin-bottom: 0.5rem;
+}
+
+@mixin h3 {
+	font-size: 1.1rem;
+	margin-top: 0;
+	line-height: 1.45;
+	margin-bottom: 0.5rem;
+}
+@mixin h4 {
+	font-size: 1rem;
+	margin-top: 0;
+	line-height: 1.5;
+	margin-bottom: 0.25rem;
+}
+@mixin h5 {
+	font-size: 0.9rem;
+	margin-top: 0;
+	line-height: 1.5;
+	margin-bottom: 0.25rem;
+}
+@mixin h6 {
+	font-size: 0.85rem;
+	margin-top: 0;
+	line-height: 1.5;
+	margin-bottom: 0.25rem;
+}
+
+body {
+	margin: 0;
+	font-size: 12px;
+	line-height: 18px;
+	font-family: "Montserrat", sans-serif;
+}
+
+h1 {
+	@include h1;
+}
+
+h2 {
+	@include h2;
+}
+h3 {
+	@include h3;
+}
+h4 {
+	@include h4;
+}
+h5 {
+	@include h5;
+}
+p {
+	margin-top: 0;
+}
+
+@mixin body-small {
+	font-size: 0.72rem;
+	line-height: 1.5;
+}
+@mixin body-xsmall {
+	font-size: 0.62rem;
+	line-height: 1.4;
+}
+
+.page {
+	width: 210mm;
+	height: 297mm;
+	padding: 0;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+}
+.page-break {
+	page-break-after: always;
+}
+
+section {
+	display: flex;
+	flex-direction: column;
+	padding: $outer-padding;
+	padding-top: calc($outer-padding - 0.35rem);
+	position: relative;
+	color: $primary-500;
+
+	&.top-section {
+		color: white;
+		background-color: $primary-500;
+		overflow: hidden;
+		flex-shrink: 0;
+
+		.intro {
+			width: 70%;
+			position: relative;
+			z-index: 2;
+
+			p {
+				margin-bottom: 0;
+			}
+			h2 {
+				font-size: 1.25rem;
+			}
+			h1 {
+				&::after {
+					color: $link-color;
+					content: ".";
+					display: inline;
+					height: auto;
+					width: auto;
+				}
+			}
+		}
+		.top-section-image {
+			position: absolute;
+			bottom: -1px;
+			right: -4rem;
+			width: 60%;
+			height: 102%;
+
+			.mask {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				z-index: 1;
+				object-fit: cover;
+			}
+			#top-section-img {
+				position: absolute;
+				top: 0;
+				left: 30%;
+				width: 50%;
+				height: 100%;
+				object-fit: cover;
+			}
+		}
+	}
+}
+
+#presentation {
+	padding-top: $outer-padding;
+	color: white;
+	background-color: $reim-secondary-500;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 1rem;
+
+	.iconbox {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+
+		div {
+			width: 3.5rem;
+			height: 3.5rem;
+			background-color: $link-color;
+			border-radius: 100px;
+			border: 4px solid $reim-secondary-500;
+			box-shadow: 0 0 0 1px $link-color;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-shrink: 0;
+
+			img {
+				width: 2rem;
+				height: 2rem;
+			}
+		}
+		p {
+			margin: 0;
+		}
+	}
+}
+
+#patrimoine {
+	gap: 2rem;
+	flex-direction: row;
+
+	.title-column {
+		@include h3;
+
+		p {
+			margin-bottom: 0;
+		}
+	}
+
+	.left-column {
+		width: 63%;
+		flex-shrink: 0;
+		display: flex;
+		flex-direction: column;
+
+		p {
+			@include body-small;
+			margin-bottom: .5rem;
+		}
+	}
+	.right-column {
+		flex-grow: 1;
+
+		.map {
+			max-width: 14rem;
+			margin: auto;
+		}
+
+		img {
+			width: 100%;
+		}
+	}
+	.item-list {
+		display: flex;
+		flex-direction: column;
+		gap: 0rem;
+
+		.item {
+			
+
+			p {
+				margin-bottom: 0;
+				@include h5;
+			}
+
+			.color-reim {
+				color: $reim-secondary-500;
+				font-size: 120%;
+			}
+		}
+	}
+}
+
+#performances {
+	background-color: $primary-500;
+	color: white;
+	flex-grow: 1;
+
+	.graphiques {
+		display: flex;
+		gap: 1rem;
+		padding-bottom: 1rem;
+		flex-grow: 1;
+
+		.graph-item {
+			background-color: #fff;
+			color: $primary-500;
+			border-radius: 8px;
+			width: 100%;
+			padding: 1rem;
+			padding-top: 0.75rem;
+			display: flex;
+			flex-direction: column;
+
+			h4 {
+				margin-bottom: 0.5rem;
+			}
+			img {
+				width: 100%;
+				height: 5rem;
+				flex-grow: 1;
+				display: flex;
+				object-fit: contain;
+			}
+			.graph {
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				flex-grow: 1;
+			}
+		}
+	}
+	.apicil-data {
+		display: flex;
+		margin-bottom: 1rem;
+		gap: 0.25rem 1.25rem;
+
+		.apicil-item {
+			font-weight: 600;
+			display: flex;
+			flex-shrink: 0;
+			@include body-xsmall;
+			gap: .25rem;
+
+			.apicil-label {
+				font-weight: 400;
+			}
+		}
+	}
+
+	#tableau-performances {
+		h3 {
+			@include h4;
+			margin-bottom: 0.5rem;
+		}
+
+		.perf-cumul-annual {
+			display: flex;
+			gap: 1rem;
+
+			.cumul-perfs {
+				width: 60%;
+				display: flex;
+			}
+			.annual-perfs {
+				display: flex;
+				flex-grow: 1;
+			}
+
+			table {
+				background-color: white;
+				color: $primary-500;
+				border-collapse: collapse;
+				@include body-small;
+				width: 100%;
+				border-radius: 8px;
+				overflow: hidden;
+				text-align: center;
+
+				td {
+					padding: 0.4rem 0.5rem;
+				}
+				th {
+					background-color: $reim-secondary-500;
+					color: white;
+					padding: 0.4rem;
+					padding-bottom: 0;
+				}
+				tbody {
+					tr:first-child {
+						td {
+							background-color: $reim-secondary-500;
+							color: white;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+#caracteristiques {
+	flex-grow: 1;
+
+	table {
+		background-color: white;
+		color: $primary-500;
+		border-collapse: collapse;
+		@include body-small;
+
+		tbody {
+			tr {
+				&:nth-child(odd) {
+					td {
+						background-color: $grey;
+
+						&:first-child {
+							border-top-left-radius: 5px;
+							border-bottom-left-radius: 5px;
+						}
+						&:last-child {
+							border-top-right-radius: 5px;
+							border-bottom-right-radius: 5px;
+						}
+					}
+				}
+				td {
+					padding: 0.25rem 0.5rem;
+					vertical-align: top;
+
+					&:first-child {
+						font-weight: 600;
+						width: 33%;
+					}
+				}
+			}
+		}
+	}
+}
+
+#frais {
+	background-color: $grey;
+
+	.frais-list-items {
+		display: grid;
+		grid-template-columns: repeat(var(--columns, 1), 1fr);
+		gap: 1rem;
+
+		.number {
+			font-weight: 700;
+			@include h3;
+			color: $reim-secondary-500;
+			margin-bottom: 0.15rem;
+
+			sup {
+				font-size: 50%;
+				padding-left: 0.25rem;
+			}
+		}
+		.text {
+			@include body-small;
+		}
+	}
+}
+
+#disponibilite {
+	flex-direction: row;
+	gap: 2rem;
+
+	h2 {
+		margin-bottom: 0;
+		margin-top: 0.2rem;
+	}
+
+	.logo-list {
+		display: grid;
+		grid-template-columns: repeat(var(--columns, 3), 1fr);
+		gap: 0.5rem;
+		margin-bottom: -0.75rem;
+		margin-top: -0.75rem;
+		width: 100%;
+
+		img {
+			max-width: 100px;
+			width: 100%;
+		}
+	}
+}
+
+#risques {
+	background-color: $reim-secondary-500;
+	color: white;
+	flex-direction: row;
+	align-items: center;
+	gap: 2rem;
+
+	.intro {
+		@include body-small;
+
+		p {
+			margin-bottom: 0;
+		}
+	}
+
+	.pastille {
+		width: 5rem;
+		height: 5rem;
+		padding: 0.6rem;
+		background-color: $link-color;
+		border-radius: 100px;
+		border: 8px solid $reim-secondary-500;
+		box-shadow: 0 0 0 1px $link-color;
+		flex-shrink: 0;
+		align-items: center;
+		justify-content: center;
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+
+		p {
+			margin-bottom: 0;
+			line-height: 1.2;
+
+			&.title {
+				font-size: 150%;
+				font-weight: 700;
+			}
+		}
+	}
+}
+
+#footer {
+	background-color: $primary-500;
+	color: white;
+	gap: 1rem;
+	flex-shrink: 0;
+
+	.top-footer {
+		display: flex;
+		align-items: flex-start;
+
+		.infos {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 1rem;
+			justify-content: center;
+
+			.reim-logo {
+				width: 12rem;
+				height: auto;
+			}
+			.link-button {
+				background-color: $reim-secondary-500;
+				color: white;
+				text-decoration: none;
+				border-radius: 6px;
+				padding: 0.2rem 0.75rem;
+			}
+		}
+		.icons-container {
+			width: 100%;
+
+			.icons-title {
+				font-weight: 700;
+				text-align: right;
+				@include h6;
+			}
+		}
+		.icon-box-footer {
+			display: flex;
+			gap: 2rem;
+			flex-grow: 1;
+			align-items: center;
+			justify-content: flex-end;
+			padding: 8px;
+
+			.wpb_wrapper {
+				width: 5.5rem;
+				height: 5.5rem;
+				background-color: $reim-secondary-500;
+				border-radius: 100px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				box-shadow: 0 0 0 8px rgba($reim-secondary-500, 0.2);
+				text-align: center;
+
+				p {
+					margin-bottom: 0;
+
+					@include body-xsmall;
+
+					strong {
+						font-size: 170%;
+						white-space: nowrap;
+						display: block;
+						font-weight: 700;
+					}
+				}
+			}
+		}
+	}
+	.bottom-footer {
+		display: flex;
+		gap: 1.5rem;
+		align-items: center;
+
+		.group-logo {
+			width: 8rem;
+			height: auto;
+		}
+		p {
+			margin: 0;
+			@include body-xsmall;
+		}
+	}
+}
