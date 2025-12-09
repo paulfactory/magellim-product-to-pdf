@@ -34,6 +34,7 @@ async function extractApicilData(debug = false) {
         const results = {
             actif_net: null,
             valeur_liquidative: null,
+            volatilite_1an: null,
             poche_immobiliere: { pourcentage: null, nb_lignes: 0 },
             poche_liquide: { pourcentage: null, nb_lignes: 0 }
         };
@@ -48,6 +49,30 @@ async function extractApicilData(debug = false) {
             results.actif_net = euroMatches[0].replace('€', '').trim().replace(/\s+/g, ' ');
             // Le second petit nombre est la valeur liquidative
             results.valeur_liquidative = euroMatches[1].replace('€', '').trim().replace(/\s+/g, ' ');
+        }
+
+        // Cherche la volatilité 1 an (valorisation bi-mensuelle)
+        // Le PDF a 2 colonnes: les labels à gauche, les valeurs à droite
+        // Structure: Valorisation / Souscription / ... / Volatilité 1 an / ...
+        //            Bi-mensuelle / VL+0,00% / ... / 0,12% / ...
+        const lines = fullText.split('\n');
+        const volatiliteLineIdx = lines.findIndex(line => line.includes('Volatilité 1 an (valorisation bi-mensuelle)'));
+        const valorisationLineIdx = lines.findIndex(line => line.trim() === 'Valorisation');
+
+        if (volatiliteLineIdx !== -1 && valorisationLineIdx !== -1) {
+            // Position relative de la volatilité par rapport à "Valorisation"
+            const position = volatiliteLineIdx - valorisationLineIdx;
+
+            // Trouve "Bi-mensuelle" qui marque le début de la colonne de valeurs (correspond à "Valorisation")
+            const bimensuelleIdx = lines.findIndex(line => line.trim() === 'Bi-mensuelle');
+            if (bimensuelleIdx !== -1 && bimensuelleIdx + position < lines.length) {
+                // La valeur de volatilité est à la même position relative après "Bi-mensuelle"
+                const volatiliteValueLine = lines[bimensuelleIdx + position];
+                const match = volatiliteValueLine.match(/([\d,]+)%/);
+                if (match) {
+                    results.volatilite_1an = match[1];
+                }
+            }
         }
 
         // Cherche tous les patterns "XX,XX% (N lignes)"
@@ -77,6 +102,7 @@ async function extractApicilData(debug = false) {
         return {
             actif_net: null,
             valeur_liquidative: null,
+            volatilite_1an: null,
             poche_immobiliere: { pourcentage: null, nb_lignes: 0 },
             poche_liquide: { pourcentage: null, nb_lignes: 0 }
         };

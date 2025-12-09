@@ -48,6 +48,10 @@
 						<span class="apicil-value" id="valeur-liquidative"></span> €
 					</div>
 					<div class="apicil-item">
+						<span class="apicil-label">Volatilité 1 an :</span>
+						<span class="apicil-value" id="volatilite-1an"></span>%
+					</div>
+					<div class="apicil-item">
 						<span class="apicil-label">Poche immobilière :</span>
 						<span class="apicil-value" id="poche-immo"></span>% (<span id="poche-immo-lignes"></span> lignes)
 					</div>
@@ -243,6 +247,7 @@
 				if (data.apicil) {
 					document.querySelector("#actif-net").textContent = data.apicil.actif_net || "N/A";
 					document.querySelector("#valeur-liquidative").textContent = data.apicil.valeur_liquidative || "N/A";
+					document.querySelector("#volatilite-1an").textContent = data.apicil.volatilite_1an || "N/A";
 					document.querySelector("#poche-immo").textContent = data.apicil.poche_immobiliere.pourcentage || "N/A";
 					document.querySelector("#poche-immo-lignes").textContent = data.apicil.poche_immobiliere.nb_lignes || "0";
 					document.querySelector("#poche-liquide").textContent = data.apicil.poche_liquide.pourcentage || "N/A";
