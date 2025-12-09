@@ -210,7 +210,7 @@ async function generatePDF(urlToScrape, customTemplate = null, customCss = null)
 		return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 	};
 
-	const fileName = removeAccents(`${topSectionTitle} - Reporting du ${performanceTitle}.pdf`)
+	const fileName = removeAccents(`${topSectionTitle} - Reporting - ${performanceTitle}.pdf`)
 		.replace(/[/\\?%*:|"<>]/g, "-");
 
 	// Génère le PDF en buffer (au lieu de le sauvegarder)
