@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { generatePDF } = require('./generate-api');
+const { getApicilData, updateCache } = require('./apicil-cache');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,7 +17,9 @@ app.get('/', (req, res) => {
         message: 'API Magellim PDF Generator',
         endpoints: {
             generatePdf: 'POST /generate-pdf',
-            testApicil: 'GET /test-apicil'
+            testApicil: 'GET /test-apicil',
+            apicilData: 'GET /apicil-data',
+            updateApicilData: 'POST /update-apicil-data'
         }
     });
 });
@@ -34,6 +37,47 @@ app.get('/test-apicil', async (req, res) => {
         res.json({
             success: true,
             data: data
+        });
+    } catch (error) {
+        console.error('❌ Erreur:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+// Route GET : récupère les données APICIL depuis le cache
+app.get('/apicil-data', async (req, res) => {
+    try {
+        console.log('📊 Récupération des données APICIL...');
+
+        const cacheData = await getApicilData();
+
+        res.json({
+            success: true,
+            ...cacheData
+        });
+    } catch (error) {
+        console.error('❌ Erreur:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+// Route POST : force la mise à jour du cache APICIL
+app.post('/update-apicil-data', async (req, res) => {
+    try {
+        console.log('🔄 Mise à jour forcée des données APICIL...');
+
+        const cacheData = await updateCache();
+
+        res.json({
+            success: true,
+            message: 'Cache APICIL mis à jour avec succès',
+            ...cacheData
         });
     } catch (error) {
         console.error('❌ Erreur:', error);

@@ -33,3 +33,4 @@ pids/
 
 # Plugin WordPress (géré séparément)
 magellim-pdf-generator/
+cache-apicil.json

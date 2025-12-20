@@ -1,10 +1,10 @@
 const puppeteer = require("puppeteer");
 const path = require("path");
-const { extractApicilData } = require("./extract-apicil");
+const { getApicilData } = require("./apicil-cache");
 
 async function generatePDF(urlToScrape, customTemplate = null, customCss = null) {
-	// Extrait les données APICIL en parallèle du scraping
-	const apicilDataPromise = extractApicilData();
+	// Récupère les données APICIL depuis le cache (au lieu de télécharger à chaque fois)
+	const apicilDataPromise = getApicilData();
 	console.log("🌐 Lancement de Puppeteer...");
 	const browser = await puppeteer.launch({
 		headless: true, // Mode headless pour le serveur
@@ -147,10 +147,10 @@ async function generatePDF(urlToScrape, customTemplate = null, customCss = null)
 		data.graphiques = {};
 	}
 
-	// Récupère les données APICIL
-	const apicilData = await apicilDataPromise;
-	data.apicil = apicilData;
-	console.log('📊 Données APICIL ajoutées au template');
+	// Récupère les données APICIL depuis le cache
+	const apicilCache = await apicilDataPromise;
+	data.apicil = apicilCache.data; // Extrait les données du cache (pas le timestamp)
+	console.log('📊 Données APICIL ajoutées au template (depuis cache)');
 
 	// Utilise le template custom si fourni, sinon le template local
 	if (customTemplate) {
