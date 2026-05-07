@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const cron = require('node-cron');
 const { generatePDF } = require('./generate-api');
 const { getApicilData, updateCache } = require('./apicil-cache');
 
@@ -119,6 +120,28 @@ app.post('/generate-pdf', async (req, res) => {
         });
     }
 });
+
+// ========================================
+// CRON JOB - Mise à jour automatique des données APICIL
+// ========================================
+
+cron.schedule('0 2 * * *', async () => {
+    console.log('🕐 Exécution du cron quotidien : mise à jour APICIL...');
+    try {
+        await updateCache();
+        console.log('✅ Cache APICIL mis à jour avec succès');
+    } catch (error) {
+        console.error('❌ Erreur lors de la mise à jour automatique APICIL:', error.message);
+    }
+}, {
+    timezone: "Europe/Paris"
+});
+
+console.log('⏰ Cron job configuré : mise à jour APICIL tous les jours à 2h00 (Europe/Paris)');
+
+// ========================================
+// DÉMARRAGE DU SERVEUR
+// ========================================
 
 // Écoute sur toutes les interfaces (IPv4 + IPv6)
 const server = app.listen(PORT, () => {
